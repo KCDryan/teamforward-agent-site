@@ -111,7 +111,7 @@ Save the answers to `intake/CLIENT.md` in the client repo. That file is the sour
 ## 2. Research (before any page is written)
 
 Research can be split across subagents (one per group of neighbourhoods). Start each with
-`model: "sonnet"` (Sonnet 5.5), as section 4 says.
+`model: "haiku"` (Haiku 5.5), as section 4 says.
 
 Write `RESEARCH.md` in the client repo: each fact with its URL and the date opened.
 
@@ -200,9 +200,9 @@ Write each in the client's voice from `CLIENT.md` and `RESEARCH.md`.
 | Tools | Mortgage calculator, land transfer tax calculator, house prices page from the board's figures |
 | Buyers, sellers, services, contact, thank-you, privacy, terms, accessibility, 404 | Rewritten, never copied |
 
-**Subagents run on Sonnet 5.5.** Every subagent used for research or writing (area research,
-neighbourhood guides, service guides, blog posts, translations) is started with `model: "sonnet"` on
-the Agent tool, never Fable or Opus, to keep token use down. The main session keeps the code work,
+**Subagents run on Haiku 5.5.** Every subagent used for research or writing (area research,
+neighbourhood guides, service guides, blog posts, translations) is started with `model: "haiku"` on
+the Agent tool, never Sonnet, Fable or Opus, to keep token use down. The main session keeps the code work,
 the final fact check against `RESEARCH.md` and `npm run verify`.
 
 Neighbourhood guides and posts can be written by parallel subagents. Brief each one fully: its own
