@@ -154,7 +154,7 @@ Pull the template first (`git -C <template> pull -q`) so the client gets the lat
 - `map-of-toronto.astro`, `scripts/build-toronto-map.mjs`, `src/data/toronto-map.json`
 - TinaCMS (`tina/`, `TINA-CMS.md`, `check:tina-lock`, the `tinacms` packages, `/admin/`): clients
   publish through `/upload/`. Keep `src/lib/html-import.ts`, which the upload page uses
-- All Toronto content: `src/content/**`, `src/assets/photos/**`, `src/data/*.json` values,
+- All Toronto content: `src/content/**`, Kirby's own photos (`kirby-portrait`, `kirby-office-casual`, `home-hero-suit`, `about-team`, all rights reserved, never sent to a client), `src/data/*.json` values (keep the licensed photo credits, see section 4),
   `BLOG-LOG.md`, `BLOG-TOPICS.md`, `KEYWORDS.md`, `UPDATE-LOG.md`, the IndexNow key file in `public/`
 - Translations: keep only languages the client serves clients in. English only is the default:
   remove `src/pages/[lang]/`, the other `src/i18n/*.json` files, the language switcher and the
@@ -225,6 +225,18 @@ and follow its voice and spelling rules ("eXp Realty", "Kirby Chan").
 - One line for other agents: "Are you an agent? See how Team Forward works" linking to the same URL
 - Never state fees, splits, revenue share figures or a founding date. The knowledge base lists those
   as unanswered
+
+---
+
+**Photos on every page (automatic).** Reuse the template's licensed photos wherever they fit, so no page goes out bare.
+
+- **Keep the licensed Toronto photos** (`neighbourhoods/*` and `places/*`, credited in `src/data/photo-credits.json`). Use a Toronto photo for a client area only when it is the same place and its `shows` text matches. Never put a Toronto photo on a different town.
+- **Neighbourhood guides:** `neighbourhoods/<slug>` for the hero, grid card and share image. An area with no matching photo gets one from Wikimedia Commons (public domain, CC0, CC BY or CC BY-SA, showing that place), saved under that key with a credit entry. No suitable photo: no photo block.
+- **Service guides:** `services/<service>`, one per chosen service, from Wikimedia Commons, showing that kind of home or activity (a bungalow for downsizing, a house exterior for first-time buyers). It is the guide's hero and share image. No suitable photo: the colour band (`BlogCardMedia.astro`).
+- **Blog posts:** the photo of the neighbourhood the post is about (`BlogPostLayout` already does this). A post about no single area uses its service's photo, else the colour band.
+- **Never** use Kirby's own photos, another agent's photo or a stock site on a client site. The client's portrait comes from the intake only.
+- **Every photo** gets a credit entry (author, licence, licenseUrl, source, `shows`), passes `node scripts/check-photos.mjs`, and its Commons URL is recorded in `RESEARCH.md`.
+- **Template change:** `GuideLayout` renders a hero from `photo('services/' + slug)` when that photo exists, so service photos show with no manual step.
 
 ---
 
