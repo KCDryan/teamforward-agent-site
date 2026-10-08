@@ -1,0 +1,7 @@
+{
+  "name": "teamforward-agent-site",
+  "version": "1.0.0",
+  "description": "Build and ship a Team Forward real estate agent website cloned from the kirbychantoronto.com codebase: neighbourhood and service guides, Meet page, blog, home evaluation, IDX search, SEO and Cloudflare Pages deploy.",
+  "author": { "name": "Kirby Chan Digital" },
+  "license": "MIT"
+}

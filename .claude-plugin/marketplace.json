@@ -1,0 +1,15 @@
+{
+  "name": "kcd-skills",
+  "description": "Skills from Kirby Chan Digital.",
+  "owner": { "name": "Kirby Chan Digital" },
+  "plugins": [
+    {
+      "name": "teamforward-agent-site",
+      "source": "./",
+      "description": "Build and ship a Team Forward agent website.",
+      "version": "1.0.0",
+      "author": { "name": "Kirby Chan Digital" },
+      "license": "MIT"
+    }
+  ]
+}
