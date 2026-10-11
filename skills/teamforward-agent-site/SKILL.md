@@ -12,6 +12,7 @@ photo and neighbourhood is new for the client.
 |---|---|
 | Template (read-only) | `$HOME/kirbychan-toronto` (repo `KCDryan/kirbychan-toronto`) |
 | Client sites | `$HOME/Client Sites/<client-slug>/` (repo `KCDryan/<client-slug>`, private) |
+| Client registry | `$HOME/Client Sites/CLIENTS.md` (repo `KCDryan/client-sites`, private) |
 | Team Forward facts | skill `anthropic-skills:team-forward-knowledge-base` |
 
 `<client-slug>` is the domain without the dot ending, for example `janedoerealty`.
@@ -382,6 +383,20 @@ Add a row to `$HOME/Client Sites/CLIENTS.md`: client, domain, repo, date, plan (
 IDX and VOW status, neighbourhoods. Check it at the start of every run so two clients never get the
 same text for a shared neighbourhood.
 
+The registry is shared between devices through the private repo `KCDryan/client-sites`:
+
+```bash
+# start of every run
+[ -d "$HOME/Client Sites/.git" ] || gh repo clone KCDryan/client-sites "$HOME/Client Sites"
+git -C "$HOME/Client Sites" pull -q
+# after adding the row
+git -C "$HOME/Client Sites" commit -qam "Add <client-slug>" && git -C "$HOME/Client Sites" push -q
+```
+
+If the clone is refused (no access to the owner's GitHub), say so and carry on with a local
+`CLIENTS.md`. A client site that is not on this device is cloned the same way:
+`gh repo clone KCDryan/<client-slug> "$HOME/Client Sites/<client-slug>"`.
+
 ---
 
 ## 9. Keeping client sites current
@@ -392,3 +407,31 @@ commits are skipped. Content is never ported.
 
 When a run teaches something new (a pitfall, a better intake question, a step that had to be
 repeated), add it to this file before finishing.
+
+---
+
+## 10. Clients outside Ontario (learned on an Alberta client site, 2026-10)
+
+- **IDX is not PropTx.** Calgary listings are in Pillar 9 (Alberta's shared MLS). Options are a Pillar 9 IDX or VOW feed (form, platform and fee must be confirmed with Pillar 9) or CREA's DDF "National Shared Pool" (OData, token from `identity.crea.ca`, active listings only). Until a feed is issued, remove the whole home search: `src/pages/homes-for-sale/`, `functions/api/listings.ts`, `listing-counts.ts`, `functions/listing/`, `functions/sitemap-listings.xml.ts`, `src/lib/proptx.ts`, `landing.ts`, `listing-page.ts`, `HomeChoices.astro`, `home-search.*`, `listing-areas.json.ts`, the counts workflow, and every reference in `NeighbourhoodLayout`, `Header`, `Hero`, `astro.config.mjs`, `_headers` and `robots.txt`. Keep `src/lib/vow.ts`: the lead form and the upload system import its helpers.
+- **Regulator and licence.** Alberta is RECA. Look the agent up on https://procheck.reca.ca/ for the licensed name, class (Associate, Associate Broker, Broker) and the brokerage's licensed name, and show all three on every page.
+- **No land transfer tax in Alberta.** Replace the calculator with Land Titles registration fees ($50 plus $5 per $5,000 or part, on the transfer and on the mortgage) in `src/lib/ltt.ts`.
+- **Board prices.** CREB publishes benchmarks by district and property type, not by community. Keep them in one data file (`src/data/creb-monthly.json`) and have guides quote the district.
+- **Photos.** Wikimedia Commons has almost nothing for newer suburbs. Ask the client for community photos in the intake, and render no photo block when a guide has none.
+- **Also remove** when not sold to the client: the "best neighbourhoods for" hubs, news, market reports, videos, client stories, the Kirbify script in `Base.astro` and its host in `_headers`, and the template's playbook files.
+- **Dev page.** `npx wrangler pages project create <slug>-dev --production-branch main` then `npx wrangler pages deploy dist --project-name <slug>-dev` gives a `pages.dev` preview without Git. Add a `https://:project.pages.dev/*` noindex rule to `public/_headers`. The live project must still be Git-connected for the blog system.
+- **Writers.** Give subagents one shared brief file in `research/` instead of repeating rules in each prompt, and cross-check every dollar figure in the content against the research files with a script before deploy.
+
+---
+
+## 11. Learned on a cottage country client site (Ontario, 2026-10)
+
+- **Never run `wrangler pages project create` for the live project.** It makes a direct-upload project that can never be switched to Git, and the blog system needs Git. Create only `<slug>-dev` with wrangler. The live project is created in the dashboard (Create application, Pages, Connect to Git) by the owner.
+- **Do not push the copied template.** A Git-connected Pages project would deploy the Toronto copy to the client's domain. Create the GitHub repo empty and push only after `npm run verify` passes on the rewritten site.
+- **When the owner says "do it for me" and skips the intake**, take identity facts from the owner's own site data, mark every other value ASSUMED in `intake/CLIENT.md`, and list them in the handover.
+- **Statistics Canada returns 403 to automated fetches.** Census figures stay NOT FOUND unless someone opens the Census Profile in a browser. Plan for guides with no census row.
+- **Board statistics can be missing.** If no average or median price exists by community, drop the price tables, the house prices page and the market band instead of inventing them.
+- **Photos.** Give every community, every service and every blog category a licensed photo, because `cardHood` and the post lead image fall back to a community photo. A community with no photo gets a placeholder or a colour band. Source with the Commons API, record `author`, `license`, `licenseUrl`, `source` and `title`, and describe only what the file page says. Do not use a photo for a village when the file page names only the lake.
+- **Writers strip commas before "and" and "or" by regex**, which leaves clipped sentences. Tell writers to reword instead.
+- **Verify figures by hand.** Re-derive every worked example. Remove any example whose rule the research does not state (an estate administration tax example went out for this reason).
+- **macOS has no `timeout`, and `-E` backup files appear when agents run `sed -i`.** Delete `*-E` files under `src/` before verify.
+- **PDFs:** `swift` with PDFKit reads a PDF's text when no PDF tool is installed.
